@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wanderly – Book Your Dream Holiday</title>
+<meta name="description" content="Wanderly makes holiday booking simple. Compare flights, hotels and experiences, and book your dream getaway in minutes.">
+<style>
+  :root {
+    --ink: #0f2a2e;
+    --muted: #5a7075;
+    --teal: #0e7c86;
+    --teal-dark: #0a5c64;
+    --coral: #ff6b4a;
+    --coral-dark: #e8512f;
+    --sand: #fdf6ec;
+    --white: #ffffff;
+    --line: #e6ecee;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(15, 42, 46, .12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: var(--white);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  .container { width: min(1140px, 92%); margin-inline: auto; }
+  .section { padding: 90px 0; }
+  .eyebrow {
+    display: inline-block; font-size: .8rem; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--coral); margin-bottom: 10px;
+  }
+  h1, h2, h3 { line-height: 1.15; }
+  h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 14px; }
+  .section-head { max-width: 640px; margin-bottom: 48px; }
+  .section-head p { color: var(--muted); font-size: 1.05rem; }
+  .center { text-align: center; margin-inline: auto; }
+
+  .btn {
+    display: inline-block; padding: 14px 28px; border-radius: 999px; font-weight: 700;
+    border: 2px solid transparent; cursor: pointer; font-size: 1rem; transition: .25s;
+  }
+  .btn-primary { background: var(--coral); color: #fff; box-shadow: 0 8px 20px rgba(255,107,74,.35); }
+  .btn-primary:hover { background: var(--coral-dark); transform: translateY(-2px); }
+  .btn-outline { border-color: rgba(255,255,255,.7); color: #fff; }
+  .btn-outline:hover { background: #fff; color: var(--teal-dark); }
+
+  /* ---------- Header ---------- */
+  header {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 20; padding: 22px 0;
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: -.02em; }
+  .logo span { color: var(--coral); }
+  .nav-links { display: flex; align-items: center; gap: 32px; color: #fff; font-weight: 500; }
+  .nav-links a:hover { color: var(--coral); }
+  .nav-links .btn { padding: 10px 22px; background: #fff; color: var(--teal-dark); }
+  .nav-links .btn:hover { background: var(--coral); color: #fff; }
+  #menu-toggle, .menu-icon { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    min-height: 100vh; position: relative; display: flex; align-items: center; color: #fff;
+    padding: 140px 0 120px; overflow: hidden;
+    background:
+      radial-gradient(circle at 80% 18%, rgba(255,214,140,.95) 0 70px, rgba(255,214,140,0) 72px),
+      linear-gradient(180deg, #0b6e82 0%, #14a0a5 45%, #f4a76a 100%);
+  }
+  .hero::before, .hero::after {
+    content: ""; position: absolute; left: -5%; right: -5%; bottom: -1px; height: 180px;
+    background: var(--white);
+    clip-path: ellipse(60% 100% at 50% 100%);
+  }
+  .hero::before { height: 230px; background: rgba(255,255,255,.25); clip-path: ellipse(55% 100% at 30% 100%); }
+  .hero-content { position: relative; z-index: 2; max-width: 720px; }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.4rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 20px; }
+  .hero h1 em { font-style: normal; color: #ffd98a; }
+  .hero p { font-size: 1.2rem; max-width: 560px; opacity: .95; margin-bottom: 34px; }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* Search card */
+  .search-wrap { position: relative; z-index: 5; margin-top: -70px; }
+  .search {
+    background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 24px; display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 16px; align-items: end;
+  }
+  .field label { display: block; font-size: .78rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field select {
+    width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 12px;
+    font-size: 1rem; font-family: inherit; color: var(--ink); background: #fff;
+  }
+  .field input:focus, .field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(14,124,134,.15); }
+  .search .btn { padding: 14px 30px; }
+
+  /* ---------- Stats ---------- */
+  .stats { padding: 70px 0 20px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center; }
+  .stat strong { display: block; font-size: 2.4rem; color: var(--teal); letter-spacing: -.02em; }
+  .stat span { color: var(--muted); font-size: .95rem; }
+
+  /* ---------- Destinations ---------- */
+  .dest-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .dest {
+    position: relative; border-radius: var(--radius); overflow: hidden; min-height: 330px;
+    display: flex; align-items: flex-end; color: #fff; box-shadow: var(--shadow); transition: .3s;
+  }
+  .dest:hover { transform: translateY(-6px); }
+  .dest .icon { position: absolute; top: 18px; right: 22px; font-size: 3.2rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,.2)); }
+  .dest .info { padding: 26px; width: 100%; background: linear-gradient(0deg, rgba(0,0,0,.6), rgba(0,0,0,0)); }
+  .dest h3 { font-size: 1.5rem; }
+  .dest p { opacity: .9; font-size: .95rem; margin-bottom: 8px; }
+  .dest .price { font-weight: 700; color: #ffd98a; }
+  .d1 { background: linear-gradient(160deg, #1fb6c9, #0b4f7a); }
+  .d2 { background: linear-gradient(160deg, #ff9a62, #b8315a); }
+  .d3 { background: linear-gradient(160deg, #7bd88f, #14704a); }
+  .d4 { background: linear-gradient(160deg, #8e9cff, #3a2c8c); }
+  .d5 { background: linear-gradient(160deg, #ffd36e, #d9701a); }
+  .d6 { background: linear-gradient(160deg, #6fd3e8, #2a6f97); }
+
+  /* ---------- How it works ---------- */
+  .how { background: var(--sand); }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; counter-reset: step; }
+  .step { background: #fff; border-radius: var(--radius); padding: 36px 30px; box-shadow: 0 4px 16px rgba(15,42,46,.06); position: relative; }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    width: 46px; height: 46px; border-radius: 50%; background: var(--teal); color: #fff;
+    display: grid; place-items: center; font-weight: 800; margin-bottom: 18px;
+  }
+  .step h3 { margin-bottom: 8px; font-size: 1.25rem; }
+  .step p { color: var(--muted); }
+
+  /* ---------- Features ---------- */
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .feature { padding: 30px; border: 1.5px solid var(--line); border-radius: var(--radius); transition: .25s; }
+  .feature:hover { border-color: var(--teal); box-shadow: var(--shadow); transform: translateY(-4px); }
+  .feature .ico {
+    width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center;
+    font-size: 1.7rem; background: rgba(14,124,134,.1); margin-bottom: 16px;
+  }
+  .feature h3 { font-size: 1.15rem; margin-bottom: 6px; }
+  .feature p { color: var(--muted); font-size: .97rem; }
+
+  /* ---------- Deals banner ---------- */
+  .deal {
+    border-radius: 28px; padding: 60px; color: #fff; display: flex; align-items: center;
+    justify-content: space-between; gap: 30px; flex-wrap: wrap;
+    background: linear-gradient(120deg, var(--teal-dark), var(--teal) 55%, #19a7a0);
+    position: relative; overflow: hidden;
+  }
+  .deal::after {
+    content: ""; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px;
+    border-radius: 50%; background: rgba(255,255,255,.1);
+  }
+  .deal h2 { margin-bottom: 8px; }
+  .deal p { opacity: .92; max-width: 520px; }
+  .deal .btn { position: relative; z-index: 1; }
+
+  /* ---------- Testimonials ---------- */
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .quote { background: #fff; border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow); }
+  .stars { color: #ffb400; letter-spacing: 3px; margin-bottom: 12px; }
+  .quote p { color: var(--ink); margin-bottom: 20px; }
+  .person { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font-weight: 700; background: linear-gradient(135deg, var(--coral), #ff9a62);
+  }
+  .person small { display: block; color: var(--muted); }
+  .testimonials { background: linear-gradient(180deg, #f3fafb, #fff); }
+
+  /* ---------- Newsletter ---------- */
+  .newsletter { text-align: center; }
+  .news-form { display: flex; gap: 12px; max-width: 520px; margin: 26px auto 0; }
+  .news-form input {
+    flex: 1; padding: 15px 20px; border-radius: 999px; border: 1.5px solid var(--line);
+    font-size: 1rem; font-family: inherit;
+  }
+  .news-form input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(14,124,134,.15); }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--ink); color: #b7c6c9; padding: 70px 0 30px; }
+  .foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  footer .logo { display: inline-block; margin-bottom: 12px; }
+  footer h4 { color: #fff; margin-bottom: 14px; }
+  footer li { margin-bottom: 9px; }
+  footer a:hover { color: var(--coral); }
+  .copy { border-top: 1px solid rgba(255,255,255,.12); padding-top: 24px; font-size: .9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .search { grid-template-columns: 1fr 1fr; }
+    .search .btn { grid-column: 1 / -1; }
+    .dest-grid, .steps, .features-grid, .quotes { grid-template-columns: 1fr 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .menu-icon { display: block; color: #fff; font-size: 1.8rem; cursor: pointer; }
+    .nav-links {
+      position: absolute; top: 70px; left: 4%; right: 4%; background: var(--teal-dark);
+      flex-direction: column; padding: 24px; border-radius: var(--radius); gap: 18px;
+      display: none; box-shadow: var(--shadow);
+    }
+    #menu-toggle:checked ~ .nav-links { display: flex; }
+    .section { padding: 64px 0; }
+    .search, .dest-grid, .steps, .features-grid, .quotes, .foot-grid { grid-template-columns: 1fr; }
+    .deal { padding: 36px 26px; }
+    .news-form { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header>
+  <div class="container nav">
+    <a href="#" class="logo">Wander<span>ly</span></a>
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon" aria-label="Toggle menu">&#9776;</label>
+    <nav class="nav-links">
+      <a href="#destinations">Destinations</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Why us</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#book" class="btn">Book now</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <span class="eyebrow" style="color:#ffd98a">Holidays made simple</span>
+      <h1>Your next <em>escape</em> is one click away.</h1>
+      <p>Compare flights, stays and experiences in one place, and book the perfect getaway at the best price. No hidden fees, no stress.</p>
+      <div class="hero-cta">
+        <a href="#book" class="btn btn-primary">Start planning</a>
+        <a href="#destinations" class="btn btn-outline">Explore destinations</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Search ===== -->
+<div class="search-wrap" id="book">
+  <div class="container">
+    <form class="search" onsubmit="return false">
+      <div class="field">
+        <label for="where">Destination</label>
+        <input id="where" type="text" placeholder="Where to?">
+      </div>
+      <div class="field">
+        <label for="checkin">Check-in</label>
+        <input id="checkin" type="date">
+      </div>
+      <div class="field">
+        <label for="checkout">Check-out</label>
+        <input id="checkout" type="date">
+      </div>
+      <div class="field">
+        <label for="guests">Travellers</label>
+        <select id="guests">
+          <option>1 traveller</option>
+          <option selected>2 travellers</option>
+          <option>3 travellers</option>
+          <option>4 travellers</option>
+          <option>5+ travellers</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Stats ===== -->
+<section class="stats">
+  <div class="container stats-grid">
+    <div class="stat"><strong>2M+</strong><span>Happy travellers</span></div>
+    <div class="stat"><strong>150+</strong><span>Destinations worldwide</span></div>
+    <div class="stat"><strong>12,000</strong><span>Partner hotels &amp; resorts</span></div>
+    <div class="stat"><strong>4.9/5</strong><span>Average customer rating</span></div>
+  </div>
+</section>
+
+<!-- ===== Destinations ===== -->
+<section class="section" id="destinations">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Popular right now</span>
+      <h2>Trending destinations</h2>
+      <p>Hand-picked escapes loved by our travellers, from sun-soaked beaches to snowy peaks.</p>
+    </div>
+    <div class="dest-grid">
+      <a href="#book" class="dest d1"><span class="icon">🏝️</span><div class="info"><h3>Maldives</h3><p>Overwater villas &amp; turquoise lagoons</p><span class="price">From $899</span></div></a>
+      <a href="#book" class="dest d2"><span class="icon">🌅</span><div class="info"><h3>Santorini</h3><p>Whitewashed cliffs &amp; golden sunsets</p><span class="price">From $749</span></div></a>
+      <a href="#book" class="dest d3"><span class="icon">🌴</span><div class="info"><h3>Bali</h3><p>Rice terraces, temples &amp; surf</p><span class="price">From $599</span></div></a>
+      <a href="#book" class="dest d4"><span class="icon">🏔️</span><div class="info"><h3>Swiss Alps</h3><p>Cosy chalets &amp; scenic trains</p><span class="price">From $1,099</span></div></a>
+      <a href="#book" class="dest d5"><span class="icon">🏜️</span><div class="info"><h3>Dubai</h3><p>Luxury, desert safaris &amp; skylines</p><span class="price">From $679</span></div></a>
+      <a href="#book" class="dest d6"><span class="icon">⛵</span><div class="info"><h3>Amalfi Coast</h3><p>Seaside villages &amp; Italian flavours</p><span class="price">From $829</span></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== How it works ===== -->
+<section class="section how" id="how">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Simple &amp; fast</span>
+      <h2>Book your holiday in 3 steps</h2>
+      <p>From idea to boarding pass in just a few minutes.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Search &amp; compare</h3><p>Enter your dream destination and dates. We show you the best flight, hotel and activity combinations side by side.</p></div>
+      <div class="step"><h3>Customise your trip</h3><p>Pick your room, add airport transfers, tours and travel insurance. Build the holiday that fits you.</p></div>
+      <div class="step"><h3>Book &amp; relax</h3><p>Pay securely, get instant confirmation and access your itinerary anytime from any device.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Features ===== -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Why Wanderly</span>
+      <h2>Travel with total confidence</h2>
+      <p>Everything you need for a smooth trip, built into one booking experience.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature"><div class="ico">💸</div><h3>Best price guarantee</h3><p>Find it cheaper elsewhere and we'll match the price, no questions asked.</p></div>
+      <div class="feature"><div class="ico">🔒</div><h3>Secure payments</h3><p>Bank-grade encryption and flexible payment options protect every booking.</p></div>
+      <div class="feature"><div class="ico">🔄</div><h3>Free cancellation</h3><p>Plans change. Cancel most bookings free of charge up to 48 hours before travel.</p></div>
+      <div class="feature"><div class="ico">🎧</div><h3>24/7 support</h3><p>Real people ready to help by chat, email or phone, whatever the time zone.</p></div>
+      <div class="feature"><div class="ico">🗺️</div><h3>Curated experiences</h3><p>Local-led tours, food trails and adventures you won't find in a guidebook.</p></div>
+      <div class="feature"><div class="ico">📱</div><h3>Everything in your pocket</h3><p>Tickets, vouchers and itineraries stay organised and available offline.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Deal banner ===== -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="deal">
+      <div>
+        <span class="eyebrow" style="color:#ffd98a">Limited time offer</span>
+        <h2>Save up to 30% on winter getaways</h2>
+        <p>Book before the end of the month and unlock exclusive discounts on beach resorts, city breaks and ski holidays.</p>
+      </div>
+      <a href="#book" class="btn btn-primary">Grab the deal</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Testimonials ===== -->
+<section class="section testimonials" id="reviews">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Loved by travellers</span>
+      <h2>What our customers say</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote">
+        <div class="stars">★★★★★</div>
+        <p>Planning our honeymoon took ten minutes. Flights, villa and transfers were all sorted in one booking. Magical trip!</p>
+        <div class="person"><div class="avatar">AR</div><div><strong>Aarav &amp; Riya</strong><small>Maldives honeymoon</small></div></div>
+      </div>
+      <div class="quote">
+        <div class="stars">★★★★★</div>
+        <p>The price match saved us a lot on our family trip to Bali, and support helped when our flight time changed.</p>
+        <div class="person"><div class="avatar">SM</div><div><strong>Sarah Mitchell</strong><small>Family holiday</small></div></div>
+      </div>
+      <div class="quote">
+        <div class="stars">★★★★★</div>
+        <p>Clean interface, honest prices and free cancellation. It's now the only site I use to book my city breaks.</p>
+        <div class="person"><div class="avatar">LK</div><div><strong>Liam Kowalski</strong><small>Frequent traveller</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Newsletter ===== -->
+<section class="section newsletter">
+  <div class="container">
+    <span class="eyebrow">Stay inspired</span>
+    <h2>Get travel deals in your inbox</h2>
+    <p style="color:var(--muted)">Join 500,000+ subscribers and never miss a flash sale.</p>
+    <form class="news-form" onsubmit="return false">
+      <input type="email" placeholder="Enter your email address" aria-label="Email address">
+      <button class="btn btn-primary" type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <a href="#" class="logo">Wander<span>ly</span></a>
+        <p>Making holiday booking simple, affordable and unforgettable since 2018.</p>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="#">About us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Blog</a></li></ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul><li><a href="#">Help centre</a></li><li><a href="#">Manage booking</a></li><li><a href="#">Cancellation policy</a></li><li><a href="#">Contact us</a></li></ul>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul><li><a href="#destinations">Destinations</a></li><li><a href="#">Hotels</a></li><li><a href="#">Flights</a></li><li><a href="#">Experiences</a></li></ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>&copy; 2026 Wanderly. All rights reserved.</span>
+      <span><a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
